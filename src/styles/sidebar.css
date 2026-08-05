@@ -1,0 +1,24 @@
+.sidebar {
+    width: 240px;
+    background-color: #263238;
+    color: white;
+    padding-top: 20px;
+}
+
+.sidebar ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar li {
+    padding: 18px 25px;
+    transition: .3s;
+}
+
+.sidebar li:hover {
+    background-color: #37474f;
+}
+
+.sidebar a {
+    display: block;
+}

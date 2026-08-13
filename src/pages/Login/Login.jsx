@@ -1,4 +1,6 @@
 import "../../styles/Login.css";
+import { login } from "../../services/authServices";
+import { useNavigate } from "react-router-dom";
 
 import {
   Paper,
@@ -22,9 +24,22 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();  
+  const handleLogin = async () => {
+     try {
+        const credentials = {
+            email,
+            password
+        };
 
-  const handleLogin = () => {
-    // Login logic here
+        const response = await login(credentials);
+        localStorage.setItem("token", response.token);
+        console.log("Login exitoso",response);
+        navigate("/dashboard");
+       
+    } catch (error) {
+        console.error("Error al iniciar sesion", error);
+    }
   };
 
   return (
@@ -104,6 +119,7 @@ function Login() {
             fullWidth
             variant="contained"
             size="large"
+            onClick={handleLogin}
             sx={{
                 mt:3,
                 py:1.5,

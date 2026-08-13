@@ -1,10 +1,44 @@
+import { useNavigate } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Button, Typography } from "@mui/material";
+
 function Navbar() {
-    return (
+    
+        const navigate = useNavigate();
+
+        const handleLogout = () => {
+            localStorage.removeItem("token");
+            navigate("/"), {replace: true};
+        };
+    return (    
         <nav className="navbar">
             <h2>Sistema de Gestion de Aulas</h2>
 
-            <div>
-                <span>Bienvenido</span>
+            <div className="navbar-user">
+                <Typography 
+                    variant="body1"
+                    sx={{
+                        color: "#ffffff",
+                        fontWeight: 600,
+                    }}
+                >Bienvenido</Typography>
+                <Button 
+                    variant="outlined" 
+                    startIcon={<LogoutIcon />}
+                    onClick={handleLogout}
+                    sx={{
+                        color: "#ffffff",
+                        borderColor: "#ffffff",
+                        textTransform: "none",
+                        fontWeight: 600,
+                        "&:hover": {
+                            borderColor: "#ffffff",
+                            backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        },
+                    }}
+                    >
+                    Cerrar Sesion
+                </Button>
             </div>
         </nav>);
 }

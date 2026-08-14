@@ -8,6 +8,8 @@ function Navbar() {
 
         const handleLogout = () => {
             localStorage.removeItem("token");
+            localStorage.removeItem("name");
+            localStorage.removeItem("lastName");
             navigate("/"), {replace: true};
         };
     return (    
@@ -20,8 +22,9 @@ function Navbar() {
                     sx={{
                         color: "#ffffff",
                         fontWeight: 600,
+                        whiteSpace: "nowrap",
                     }}
-                >Bienvenido</Typography>
+                >Bienvenido, {localStorage.getItem("name")} </Typography>
                 <Button 
                     variant="outlined" 
                     startIcon={<LogoutIcon />}

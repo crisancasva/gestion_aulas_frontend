@@ -34,6 +34,8 @@ function Login() {
 
         const response = await login(credentials);
         localStorage.setItem("token", response.token);
+        localStorage.setItem("name", response.name);
+        localStorage.setItem("lastName", response.lastName);
         console.log("Login exitoso",response);
         navigate("/dashboard");
        

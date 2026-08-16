@@ -34,6 +34,9 @@ function User() {
     const [roleId, setRoleId] = useState(2);
     const [stateId, setStateId] = useState(1);
     const [editingUser, setEditingUser] = useState(null);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [userToDelete, setUserToDelete] = useState(null);
+    
 
     useEffect(() => {
         const loadUsers = async () => {
@@ -110,17 +113,23 @@ function User() {
         }
     };
 
-    const handleDeleteUser = async (id) => {
-        const confirmDelete = window.confirm(
-            "¿Estás seguro de que deseas eliminar al usuario ${user.name} ${user.lastName}?"
-        );
-        if (!confirmDelete) return;
+    const handleDeleteUser = (user) => {
+        setUserToDelete(user);
+        setOpenDeleteDialog(true);
+    };
+
+    const confirmDeleteUser = async () => {
         try {
-            await deleteUser(id);
+            await deleteUser(userToDelete.id);
+
             const updatedUsers = await getUsers();
             setUsers(updatedUsers);
 
-            console.log("Usuario eliminado con éxito");
+            setOpenDeleteDialog(false);
+            setUserToDelete(null);
+
+            console.log("Usuario eliminado correctamente");
+
         } catch (error) {
             console.error("Error al eliminar usuario:", error);
             console.log("Respuesta del backend:", error.response?.data);
@@ -221,7 +230,7 @@ function User() {
                                         variant="outlined"
                                         size="small"
                                         onClick={() => {
-                                            handleDeleteUser(user.id);
+                                            handleDeleteUser(user);
                                         }}
                                         sx={{ minWidth: "40px",
                                             width: "40px",
@@ -316,6 +325,49 @@ function User() {
                     <Button onClick={() => setOpenDialog(false)}>Cancelar</Button>
                     <Button onClick={editingUser ? handleUpdateUser : handleCreateUser} variant="contained">
                         {editingUser ? "Guardar Cambios" : "Crear Usuario"}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openDeleteDialog}
+                onClose={() => {
+                    setOpenDeleteDialog(false);
+                    setUserToDelete(null);
+                }}
+                maxWidth="xs"
+                fullWidth
+            >
+                <DialogTitle>
+                    Eliminar usuario
+                </DialogTitle>
+
+                <DialogContent>
+                    <Typography>
+                        ¿Está seguro de que desea eliminar al usuario{" "}
+                        <strong>
+                            {userToDelete?.name} {userToDelete?.lastName}
+                        </strong>
+                        ?
+                    </Typography>
+                </DialogContent>
+
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setOpenDeleteDialog(false);
+                            setUserToDelete(null);
+                        }}
+                    >
+                        Cancelar
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={confirmDeleteUser}
+                    >
+                        Eliminar
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -5,6 +5,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {
     Box,
     Button,
+    Chip,
     Dialog,
     DialogActions,
     DialogContent,
@@ -224,8 +225,21 @@ function Classroom() {
                                 </TableCell>
 
                                 <TableCell>
-                                    {classroom.state}
+                                    <Chip
+                                        label={
+                                            classroom.state === "DISPONIBLE"
+                                                ? "Disponible"
+                                                : "No disponible"
+                                        }
+                                        color={
+                                            classroom.state === "DISPONIBLE"
+                                                ? "success"
+                                                : "error"
+                                        }
+                                        size="small"
+                                    />
                                 </TableCell>
+                                
                                 <TableCell>
                                     <Button
                                         variant="outlined"
